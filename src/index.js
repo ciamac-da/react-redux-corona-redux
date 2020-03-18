@@ -9,6 +9,7 @@ import { connect, Provider } from 'react-redux';
 import TextField             from '@material-ui/core/TextField'
 import Checkbox              from '@material-ui/core/Checkbox'
 import FormControlLabel      from '@material-ui/core/FormControlLabel'
+import Button                from '@material-ui/core/Button'
 
 import './index.css';
 
@@ -31,24 +32,25 @@ function patientHinzufügen(state){
 
 function reducer ( state = defaultState, action ){
   const { type, name, liste, index } = action;
+  let neueListe;
   switch ( type ){
     case "nameÄndern":             state = { ...state, name }; break;
     case "testergebnisUmschalten": state = { ...state, testPositiv: ! state.testPositiv }; break;
     case "patientHinzufügen":      state = patientHinzufügen(state); break;
     case "patientBearbeiten":
       // Erstelle eine Kopie von der Liste, aus welcher wir den Patienten löschen wollen.
-      const bearbeitet = [ ...state[liste] ]; // const bearbeitet = state[liste].slice()
-      const [ eintrag ] = bearbeitet.splice( index, 1 );
+      neueListe = [ ...state[liste] ]; // neueListe = state[liste].slice()
+      const [ eintrag ] = neueListe.splice( index, 1 );
       state = {
         ...state,
-        [liste]:     bearbeitet,
+        [liste]:     neueListe,
         name:        eintrag,
         testPositiv: liste === 'positiv'
       };
       break;
     case "patientLöschen":
       // Erstelle eine Kopie von der Liste, aus welcher wir den Patienten löschen wollen.
-      const neueListe = [ ...state[liste] ]; // const neueListe = state[liste].slice()
+      neueListe = [ ...state[liste] ]; // neueListe = state[liste].slice()
       neueListe.splice( index, 1 );
       state = { ...state, [liste]: neueListe };
       break;
@@ -74,26 +76,78 @@ const adapter = connect(
   mapActionsToProps
 );
 
+/*
+  Die Eingabe Komponente ist dafür da neue Patienten zu erfassen,
+  oder bestehende Patienten zu bearbeiten.
+    - Sie ist mit redux durch den adapter verbunden und erhält somit
+      alle props und actions
+    - Wichtig: die Checkbox bekommt ihren Wert nich aus der value-prop
+      sondern aus der __ checked-prop __
+*/
+
 const Eingabe = adapter( function({
     name, nameÄndern,
     testPositiv, testergebnisUmschalten,
     patientHinzufügen
 }){
   return ( <>
-    <TextField/>
+    <TextField
+      label="Name"
+      value={name}
+      onChange={e => nameÄndern(e.target.value)}
+    />
     <FormControlLabel
       control={
-        <Checkbox value="checkedC" />
+      <Checkbox
+        value="positiv"
+        checked={testPositiv}
+        onClick={testergebnisUmschalten}
+      />
       }
-      label="Uncontrolled"
+      label="Test Positiv"
     />
+    <Button onClick={patientHinzufügen}>Hinzufügen</Button>
   </> );
 });
 
+/*
+  Die Liste Komponente soll für postiv und negativ getestete patienten benutzt werden.
+    - Die prop {was}(String) erhält entweder "positiv" oder "negativ"
+      diese prop wird später auch an die actions ( patientBearbeiten, patientLöschen )
+      weitergegeben. Ausserdem könne wir mit hilfe dieser prop den entsprechenden
+      Array (props.positiv, props.negativ) auswählen ( mittels props[was] )
+    - Deswegen destrukturieren wir ausnahmsweise mal nicht direkt,
+      sondern nehmen unsere props erstmal in die props Variable,
+      um dann die variablen die wir brauchen zu destrukturieren, bzw. lesen.
+*/
+
+const Liste = adapter(
+function( props ){
+  const { patientLöschen, patientBearbeiten, was } = props;
+  const liste = props[was];
+  return (
+  <table>
+    <tr><th>{was}</th></tr>
+    { liste.map( (patient,index) =>
+      <tr>
+        <td>{patient}</td>
+        <td>
+          <Button onClick={ e => patientBearbeiten(was,index) }>Bearbeiten</Button>
+          <Button onClick={ e => patientLöschen(was,index) }>Löschen</Button>
+        </td>
+      </tr>
+    )}
+  </table> );
+});
+
+
 const store = createStore(reducer);
+
 ReactDOM.render(
   <Provider store={store}>
     <Eingabe/>
+    <Liste was="positiv"/>
+    <Liste was="negativ"/>
   </Provider>
 , document.getElementById('root'));
 
