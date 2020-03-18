@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
+import { TetxField} from '@material-ui/core/TextField';
+import { Checkbox} from '@material-ui/core/Checkbox';
+import { FormControlLabel} from '@material-ui/core/FormControlLabel';
 
 const defaultState ={
       name:"",
@@ -41,7 +44,7 @@ function reducer ( state = defaultState, action){
                  testPositiv: liste === "positiv"
            };
            break;
-           
+
            case "patientLöschen":           
            // Erstelle eine Kopiew von der Liste, aus welcher wir den Patienten löschen wollen.
            const neueListe = [...state[liste] ]; // const neueListe = state[liste].splice
@@ -66,5 +69,34 @@ function mapActionsToProps ( dispatch ){
 const mapStateToProps = state => state;
 const adapter = connect(mapActionsToProps,mapStateToProps)
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const Eingabe = adapter( function({
+      name,nameÄndern,
+      testPositiv,testergebnisUmschalten, 
+      patientHinzufügen
+}){
+ return(
+       <>
+            <TetxField 
+            value={name} 
+            onChange={e=> nameÄndern(e.target.value)}
+            onClick={testergebnisUmschalten}
+            />
+            <FormControlLabel
+            control={
+             <Checkbox
+             value="positiv" 
+            checked={testPositiv}
+            onClick={testergebnisUmschalten}
+             />
+}
+label="Test Positiv"
+            />
+         </>   );
+});
+const store = createStore(reducer);
+ReactDOM.render(
+      <Provider store={store}>
+            <Eingabe/>>
+      </Provider>
+, document.getElementById('root'));
 serviceWorker.unregister();
