@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 
 import { createStore }       from 'redux'
 import { connect, Provider } from 'react-redux';
+
 import TextField             from '@material-ui/core/TextField'
 import Checkbox              from '@material-ui/core/Checkbox'
 import FormControlLabel      from '@material-ui/core/FormControlLabel'
@@ -41,8 +42,10 @@ function reducer ( state = defaultState, action ){
   const { type, name, liste, index } = action;
   let neueListe;
   switch ( type ){
-    case "nameÄndern":             state = { ...state, name }; break;
-    case "testergebnisUmschalten": state = { ...state, testPositiv: ! state.testPositiv }; break;
+    case "nameÄndern":
+      state = { ...state, name }; break;
+    case "testergebnisUmschalten":
+      state = { ...state, testPositiv: ! state.testPositiv }; break;
     case "patientHinzufügen":      state = patientHinzufügen(state); break;
     case "patientBearbeiten":
       // Erstelle eine Kopie von der Liste, aus welcher wir den Patienten löschen wollen.
@@ -159,7 +162,6 @@ function( props ){
     )}
   </table> );
 });
-
 
 const store = createStore(reducer);
 
