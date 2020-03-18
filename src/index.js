@@ -23,6 +23,7 @@ function patientHinzufügen(state){
 }
 
 
+// reducer function!
 function reducer ( state = defaultState, action){
       const { type, name, liste, index } = action;
       switch( action.type ){
@@ -51,7 +52,7 @@ function mapActionsToProps ( dispatch ){
 
       }
 }
-
+const mapActionsToProps = state => state;
 
 ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
