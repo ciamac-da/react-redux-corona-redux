@@ -11,6 +11,13 @@ import Checkbox              from '@material-ui/core/Checkbox'
 import FormControlLabel      from '@material-ui/core/FormControlLabel'
 import Button                from '@material-ui/core/Button'
 
+import Paper                 from '@material-ui/core/Paper'
+import Grid                  from '@material-ui/core/Grid'
+
+import EditIcon              from '@material-ui/icons/Edit'
+import HighlightOffIcon      from '@material-ui/icons/HighlightOff'
+import AddCircleOutlineIcon  from '@material-ui/icons/AddCircleOutline'
+
 import './index.css';
 
 import App from './App';
@@ -90,24 +97,33 @@ const Eingabe = adapter( function({
     testPositiv, testergebnisUmschalten,
     patientHinzufügen
 }){
-  return ( <>
-    <TextField
-      label="Name"
-      value={name}
-      onChange={e => nameÄndern(e.target.value)}
-    />
-    <FormControlLabel
-      control={
-      <Checkbox
-        value="positiv"
-        checked={testPositiv}
-        onClick={testergebnisUmschalten}
+  return (
+  <Grid container>
+    <Grid item>
+      <TextField fullWidth
+        label="Name"
+        value={name}
+        onChange={e => nameÄndern(e.target.value)}
       />
-      }
-      label="Test Positiv"
-    />
-    <Button onClick={patientHinzufügen}>Hinzufügen</Button>
-  </> );
+    </Grid>
+    <Grid item>
+      <FormControlLabel
+        control={
+        <Checkbox
+          value="positiv"
+          checked={testPositiv}
+          onClick={testergebnisUmschalten}
+        />
+        }
+        label="Test Positiv"
+      />
+    </Grid>
+    <Grid item>
+      <Button onClick={patientHinzufügen}>
+        <AddCircleOutlineIcon/>
+      </Button>
+    </Grid>
+  </Grid> );
 });
 
 /*
@@ -132,8 +148,12 @@ function( props ){
       <tr>
         <td>{patient}</td>
         <td>
-          <Button onClick={ e => patientBearbeiten(was,index) }>Bearbeiten</Button>
-          <Button onClick={ e => patientLöschen(was,index) }>Löschen</Button>
+          <Button onClick={ e => patientBearbeiten(was,index) }>
+            <EditIcon/>
+          </Button>
+          <Button onClick={ e => patientLöschen(was,index) }>
+            <HighlightOffIcon/>
+          </Button>
         </td>
       </tr>
     )}
@@ -145,9 +165,21 @@ const store = createStore(reducer);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Eingabe/>
-    <Liste was="positiv"/>
-    <Liste was="negativ"/>
+    <Paper style={{padding:'5px',margin:'5px'}}>
+      <Eingabe/>
+    </Paper>
+      <Grid container>
+        <Grid item xs={6}>
+          <Paper style={{padding:'5px',margin:'5px'}}>
+            <Liste was="positiv"/>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper style={{padding:'5px',margin:'5px'}}>
+            <Liste was="negativ"/>
+          </Paper>
+        </Grid>
+      </Grid>
   </Provider>
 , document.getElementById('root'));
 
