@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { connect } from 'react-redux';
 
 const defaultState ={
       name:"",
@@ -26,11 +27,21 @@ function patientHinzufügen(state){
 // reducer function!
 function reducer ( state = defaultState, action){
       const { type, name, liste, index } = action;
-      switch( action.type ){
+      switch( type ){
            case "nameÄndern":             state = { ...state, name }; break;
            case "testergebnisUmschalten": state = { ...state, testPositiv: ! state.testPositiv }; break;
            case "patientHinzufügen":      state = patientHinzufügen(state); break;
-           case "patientBearbeiten":      state = { ...state, }; break;          
+           case "patientBearbeiten":            
+           const bearbeitet = [...state[liste]];
+           const [eintrag] = bearbeitet.splice(index,1);
+           state = {
+                 ...state,
+                 [liste]: bearbeitet,
+                 name: eintrag,
+                 testPositiv: liste === "positiv"
+           };
+           break;
+           
            case "patientLöschen":           
            // Erstelle eine Kopiew von der Liste, aus welcher wir den Patienten löschen wollen.
            const neueListe = [...state[liste] ]; // const neueListe = state[liste].splice
@@ -52,7 +63,8 @@ function mapActionsToProps ( dispatch ){
 
       }
 }
-const mapActionsToProps = state => state;
+const mapStateToProps = state => state;
+const adapter = connect(mapActionsToProps,mapStateToProps)
 
 ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
