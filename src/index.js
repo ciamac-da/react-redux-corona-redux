@@ -26,8 +26,8 @@ import App from './App';
 const defaultState = {
   name:"",
   testPositiv:false,
-  positiv:[ "anx" ],
-  negativ:[ "shahin" ]
+  positiv:[ "Ciamac" ],
+  negativ:[ "Shahin" ]
 };
 
 function patientHinzufügen(state){
@@ -101,7 +101,7 @@ const Eingabe = adapter( function({
     patientHinzufügen
 }){
   return (
-  <Grid container>
+  <Grid container style={{backgroundColor:"white"}}>
     <Grid item>
       <TextField fullWidth
         label="Name"
@@ -172,12 +172,12 @@ ReactDOM.render(
     </Paper>
       <Grid container>
         <Grid item xs={6}>
-          <Paper style={{padding:'5px',margin:'5px'}}>
+          <Paper style={{padding:'5px',margin:'5px', backgroundColor:"red", color:"white", fontWeight:"bolder"}}>
             <Liste was="positiv"/>
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper style={{padding:'5px',margin:'5px'}}>
+          <Paper style={{padding:'5px',margin:'5px', backgroundColor:"green" ,color:"white", fontWeight:"bolder"}}>
             <Liste was="negativ"/>
           </Paper>
         </Grid>
