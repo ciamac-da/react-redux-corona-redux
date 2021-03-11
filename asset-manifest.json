@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/react-reduc-corona-redux/static/css/main.52b195ae.chunk.css",
+    "main.js": "/react-reduc-corona-redux/static/js/main.5f5ea206.chunk.js",
+    "main.js.map": "/react-reduc-corona-redux/static/js/main.5f5ea206.chunk.js.map",
+    "runtime-main.js": "/react-reduc-corona-redux/static/js/runtime-main.3a64e80d.js",
+    "runtime-main.js.map": "/react-reduc-corona-redux/static/js/runtime-main.3a64e80d.js.map",
+    "static/js/2.29ca5ffd.chunk.js": "/react-reduc-corona-redux/static/js/2.29ca5ffd.chunk.js",
+    "static/js/2.29ca5ffd.chunk.js.map": "/react-reduc-corona-redux/static/js/2.29ca5ffd.chunk.js.map",
+    "index.html": "/react-reduc-corona-redux/index.html",
+    "precache-manifest.9f2666750f3a1bb401bd05d68874213a.js": "/react-reduc-corona-redux/precache-manifest.9f2666750f3a1bb401bd05d68874213a.js",
+    "service-worker.js": "/react-reduc-corona-redux/service-worker.js",
+    "static/css/main.52b195ae.chunk.css.map": "/react-reduc-corona-redux/static/css/main.52b195ae.chunk.css.map",
+    "static/js/2.29ca5ffd.chunk.js.LICENSE.txt": "/react-reduc-corona-redux/static/js/2.29ca5ffd.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3a64e80d.js",
+    "static/js/2.29ca5ffd.chunk.js",
+    "static/css/main.52b195ae.chunk.css",
+    "static/js/main.5f5ea206.chunk.js"
+  ]
+}
